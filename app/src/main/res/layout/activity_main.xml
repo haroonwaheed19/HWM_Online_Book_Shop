@@ -1,0 +1,155 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#F0F0F0"
+    tools:context=".MainActivity">
+
+    <!-- App Logo or Title Section -->
+    <ImageView
+        android:src="@drawable/hwm_logo"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_width="200dp"
+        android:layout_height="130dp"
+        android:contentDescription="App Logo"/>
+
+    <!-- Email CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvEmail"
+        android:layout_marginTop="80dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <EditText
+            android:id="@+id/etEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your email"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#A8A8A8"
+            android:textAlignment="viewStart"
+            android:drawablePadding="8dp"
+            android:inputType="textEmailAddress"
+            android:background="@android:color/transparent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Password CardView -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvPassword"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="4dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp">
+
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter your password"
+            android:textSize="18sp"
+            android:padding="12dp"
+            android:textColor="#333333"
+            android:textColorHint="#A8A8A8"
+            android:textAlignment="viewStart"
+            android:drawablePadding="8dp"
+            android:inputType="textPassword"
+            android:background="@android:color/transparent"
+            />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Login Button -->
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:backgroundTint="#1D9D74"
+        android:layout_marginTop="30dp"
+        android:textSize="18sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="14dp"/>
+
+    <!-- Forgot password -->
+    <Button
+        android:id="@+id/btnForgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forgot password?"
+        android:textColor="#2196F3"
+        android:background="@android:color/transparent"
+        android:layout_marginTop="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="8dp"
+        android:layout_gravity="center"
+        android:focusable="true"
+        android:clickable="true"/>
+
+    <!-- Create New Account Button -->
+    <Button
+        android:id="@+id/btnNewAccount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Create new account"
+        android:textColor="#1D9D74"
+        android:backgroundTint="#4CAF50"
+        android:layout_marginTop="70dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:padding="14dp"
+        android:layout_gravity="center"
+        android:focusable="true"
+        android:clickable="true"
+        android:background="@drawable/rounded_border_button"/>
+
+    <!-- Bottom Section with App Logo and Text -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_marginTop="10dp"
+        >
+
+        <ImageView
+            android:src="@drawable/hwm_logo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:contentDescription="App Logo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HWM Book Store"
+            android:textSize="18sp"
+            android:textColor="#2196F3"
+            android:layout_marginLeft="10dp"
+            android:padding="5dp"
+            android:textStyle="bold"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+
+</LinearLayout>
