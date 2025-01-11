@@ -10,14 +10,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginScreen : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
+    private lateinit var firestore: FirebaseFirestore
 
-    public override fun onStart() {
+    override fun onStart() {
         super.onStart()
-        // Check if user is signed in (non-null) and update UI accordingly.
+        auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
             startActivity(Intent(this, MainActivity::class.java))
@@ -29,14 +30,15 @@ class LoginScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.login_activity)
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Initialize Firebase Auth
         auth = FirebaseAuth.getInstance()
+        firestore = FirebaseFirestore.getInstance()
 
         val emailEditText = findViewById<EditText>(R.id.etEmail)
         val passwordEditText = findViewById<EditText>(R.id.etPassword)
@@ -44,7 +46,6 @@ class LoginScreen : AppCompatActivity() {
         val createAccountButton = findViewById<Button>(R.id.btnNewAccount)
         val forgotPasswordButton = findViewById<Button>(R.id.btnForgotPassword)
 
-        // Login Button Click Listener
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
@@ -60,19 +61,20 @@ class LoginScreen : AppCompatActivity() {
                         val currentUser = auth.currentUser
                         val userId = currentUser?.uid
 
-                        // Fetch role from database
-                        val databaseReference = FirebaseDatabase.getInstance().getReference("Users").child(userId!!)
-                        databaseReference.child("role").get()
-                            .addOnSuccessListener { snapshot ->
-                                val role = snapshot.value.toString()
-                                if (role == "admin") {
-                                    // Navigate to Admin Dashboard
-                                    startActivity(Intent(this, UserDashBoard::class.java))
+                        // Fetch user role from Firestore
+                        firestore.collection("users").document(userId!!).get()
+                            .addOnSuccessListener { document ->
+                                if (document.exists()) {
+                                    val role = document.getString("role") ?: "user"
+                                    if (role == "admin") {
+                                        startActivity(Intent(this, AdminDashboard::class.java))
+                                    } else {
+                                        startActivity(Intent(this, UserDashBoard::class.java))
+                                    }
+                                    finish()
                                 } else {
-                                    // Navigate to User Dashboard
-                                    startActivity(Intent(this, AdminDashboard::class.java))
+                                    Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
                                 }
-                                finish()
                             }
                             .addOnFailureListener {
                                 Toast.makeText(this, "Failed to retrieve user role", Toast.LENGTH_SHORT).show()
@@ -81,19 +83,15 @@ class LoginScreen : AppCompatActivity() {
                         Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
-
         }
 
-        // Create Account Button Click Listener
         createAccountButton.setOnClickListener {
             startActivity(Intent(this, CreateAccount::class.java))
             finish()
         }
 
-        // Forgot Password Button Click Listener
         forgotPasswordButton.setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
-
     }
 }
