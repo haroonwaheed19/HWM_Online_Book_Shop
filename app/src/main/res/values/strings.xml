@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">HWM Online Book Shop</string>
+    <string name="app_logo">App Logo</string>
+    <string name="enter_your_email">Enter your email</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="create_new_account">Create new account</string>
+    <string name="footer_logo">Footer Logo</string>
+    <string name="hwm_book_store">HWM Book Store</string>
+    <string name="enter_your_name">Enter your Name</string>
+    <string name="logout">Logout</string>
+<!--    <string name="default_web_client_id">496469332936-piok4gg8e3lre49pf9qqgfoj79ro9b3i.apps.googleusercontent.com</string>-->
 </resources>

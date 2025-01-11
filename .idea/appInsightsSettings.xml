@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="PLACEHOLDER" />
-                  <option name="mobileSdkAppId" value="" />
-                  <option name="projectId" value="" />
-                  <option name="projectNumber" value="" />
+                  <option name="appId" value="com.hwm.hwmonlinebookshop" />
+                  <option name="mobileSdkAppId" value="1:496469332936:android:946e90bcb5f296a0e126fd" />
+                  <option name="projectId" value="hwm-book-store" />
+                  <option name="projectNumber" value="496469332936" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />
