@@ -2,8 +2,11 @@ package com.hwm.hwmonlinebookshop
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -21,8 +24,7 @@ class LoginScreen : AppCompatActivity() {
         auth = FirebaseAuth.getInstance()
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            navigateToDashboard(currentUser.uid)
         }
     }
 
@@ -45,44 +47,35 @@ class LoginScreen : AppCompatActivity() {
         val loginButton = findViewById<Button>(R.id.btnLogin)
         val createAccountButton = findViewById<Button>(R.id.btnNewAccount)
         val forgotPasswordButton = findViewById<Button>(R.id.btnForgotPassword)
+        val showHidePasswordImageView = findViewById<ImageView>(R.id.ivShowHidePassword)
+        var isPasswordVisible = false
+
+        // Toggle password visibility
+        showHidePasswordImageView.setOnClickListener {
+            if (isPasswordVisible) {
+                // Hide the password
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                showHidePasswordImageView.setImageResource(R.drawable.ic_eye)
+            } else {
+                // Show the password
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                showHidePasswordImageView.setImageResource(R.drawable.ic_eye)
+            }
+            isPasswordVisible = !isPasswordVisible
+
+            // Move the cursor to the end of the text
+            passwordEditText.setSelection(passwordEditText.text.length)
+        }
 
         loginButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()
             val password = passwordEditText.text.toString().trim()
 
             if (email.isEmpty() || password.isEmpty()) {
-                Toast.makeText(this, "Please enter all fields", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
+                showToast("Please enter all fields")
+            } else {
+                loginUser(email, password)
             }
-
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val currentUser = auth.currentUser
-                        val userId = currentUser?.uid
-
-                        // Fetch user role from Firestore
-                        firestore.collection("users").document(userId!!).get()
-                            .addOnSuccessListener { document ->
-                                if (document.exists()) {
-                                    val role = document.getString("role") ?: "user"
-                                    if (role == "admin") {
-                                        startActivity(Intent(this, AdminDashboard::class.java))
-                                    } else {
-                                        startActivity(Intent(this, UserDashBoard::class.java))
-                                    }
-                                    finish()
-                                } else {
-                                    Toast.makeText(this, "User data not found", Toast.LENGTH_SHORT).show()
-                                }
-                            }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "Failed to retrieve user role", Toast.LENGTH_SHORT).show()
-                            }
-                    } else {
-                        Toast.makeText(this, "Login Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
         }
 
         createAccountButton.setOnClickListener {
@@ -93,5 +86,44 @@ class LoginScreen : AppCompatActivity() {
         forgotPasswordButton.setOnClickListener {
             startActivity(Intent(this, ForgotPasswordActivity::class.java))
         }
+    }
+
+    private fun loginUser(email: String, password: String) {
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val currentUser = auth.currentUser
+                    currentUser?.let {
+                        navigateToDashboard(it.uid)
+                    }
+                } else {
+                    showToast("Login Failed: ${task.exception?.message}")
+                }
+            }
+    }
+
+    private fun navigateToDashboard(userId: String) {
+        firestore.collection("users").document(userId).get()
+            .addOnSuccessListener { document ->
+                if (document.exists()) {
+                    val role = document.getString("role") ?: "user"
+                    val intent = if (role == "admin") {
+                        Intent(this, AdminDashboard::class.java)
+                    } else {
+                        Intent(this, UserDashboard::class.java)
+                    }
+                    startActivity(intent)
+                    finish()
+                } else {
+                    showToast("User data not found")
+                }
+            }
+            .addOnFailureListener {
+                showToast("Failed to retrieve user role")
+            }
+    }
+
+    private fun showToast(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

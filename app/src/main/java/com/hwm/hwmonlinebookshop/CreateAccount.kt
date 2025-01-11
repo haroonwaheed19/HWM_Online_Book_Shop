@@ -2,8 +2,11 @@ package com.hwm.hwmonlinebookshop
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
+import android.text.method.PasswordTransformationMethod
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +37,25 @@ class CreateAccount : AppCompatActivity() {
         val emailEditText = findViewById<EditText>(R.id.etEmail)
         val passwordEditText = findViewById<EditText>(R.id.etPassword)
         val createAccountButton = findViewById<Button>(R.id.btnLogin)
+        val showHidePasswordImageView = findViewById<ImageView>(R.id.ivShowHidePassword)
+        var isPasswordVisible = false
+
+        // Toggle password visibility
+        showHidePasswordImageView.setOnClickListener {
+            if (isPasswordVisible) {
+                // Hide the password
+                passwordEditText.transformationMethod = PasswordTransformationMethod.getInstance()
+                showHidePasswordImageView.setImageResource(R.drawable.ic_eye)
+            } else {
+                // Show the password
+                passwordEditText.transformationMethod = HideReturnsTransformationMethod.getInstance()
+                showHidePasswordImageView.setImageResource(R.drawable.ic_eye)
+            }
+            isPasswordVisible = !isPasswordVisible
+
+            // Move the cursor to the end of the text
+            passwordEditText.setSelection(passwordEditText.text.length)
+        }
 
         createAccountButton.setOnClickListener {
             val email = emailEditText.text.toString().trim()

@@ -66,6 +66,17 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/etEmail" />
 
+            <ImageView
+                android:id="@+id/ivShowHidePassword"
+                android:layout_width="30dp"
+                android:layout_height="19dp"
+                android:layout_marginEnd="20dp"
+                android:contentDescription="@string/show_password"
+                android:src="@drawable/ic_eye"
+                app:layout_constraintBottom_toBottomOf="@+id/etPassword"
+                app:layout_constraintEnd_toEndOf="@+id/etPassword"
+                app:layout_constraintTop_toTopOf="@+id/etPassword" />
+
             <Button
                 android:id="@+id/btnLogin"
                 android:layout_width="0dp"

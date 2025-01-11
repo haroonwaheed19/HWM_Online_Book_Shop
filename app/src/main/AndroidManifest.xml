@@ -16,7 +16,7 @@
             android:name=".AdminDashboard"
             android:exported="false" />
         <activity
-            android:name=".UserDashBoard"
+            android:name=".UserDashboard"
             android:exported="false" />
         <activity
             android:name=".ForgotPasswordActivity"

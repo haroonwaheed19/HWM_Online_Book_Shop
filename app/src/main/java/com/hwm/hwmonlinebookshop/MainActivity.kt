@@ -21,23 +21,5 @@ class MainActivity : AppCompatActivity() {
             insets
         }
 
-        val auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-        val logoutButton = findViewById<Button>(R.id.btnLogout)
-        val textView = findViewById<TextView>(R.id.tvEmail)
-        if (user == null) {
-            startActivity(Intent(this, LoginScreen::class.java))
-            finish()
-        }
-        else {
-            textView.text = user.email
-        }
-
-        logoutButton.setOnClickListener {
-            auth.signOut()
-            startActivity(Intent(this, LoginScreen::class.java))
-            finish()
-        }
-
     }
 }

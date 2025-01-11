@@ -13,5 +13,11 @@
     <string name="reset_password">Reset Password</string>
     <string name="welcome_to_hwm_book_store">Welcome to HWM Book Store</string>
     <string name="browse_books">Browse Books</string>
+    <string name="my_orders">My Orders</string>
+    <string name="profile">Profile</string>
+    <string name="add_book">Add Book</string>
+    <string name="update_book_data">Update Book Data</string>
+    <string name="view_orders">View Orders</string>
+    <string name="show_password">show password</string>
     <!--    <string name="default_web_client_id">496469332936-piok4gg8e3lre49pf9qqgfoj79ro9b3i.apps.googleusercontent.com</string>-->
 </resources>

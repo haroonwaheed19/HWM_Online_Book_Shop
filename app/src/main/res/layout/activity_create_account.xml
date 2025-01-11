@@ -59,19 +59,30 @@
         android:id="@+id/etPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginRight="20dp"
+        android:layout_marginTop="28dp"
         android:background="@android:color/transparent"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:hint="@string/enter_your_password"
         android:inputType="textPassword"
         android:padding="12dp"
         android:textColorHint="#A8A8A8"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/etEmail" />
+
+    <ImageView
+        android:id="@+id/ivShowHidePassword"
+        android:layout_width="30dp"
+        android:layout_height="19dp"
+        android:layout_marginEnd="20dp"
+        android:contentDescription="@string/show_password"
+        android:src="@drawable/ic_eye"
+        app:layout_constraintBottom_toBottomOf="@+id/etPassword"
+        app:layout_constraintEnd_toEndOf="@+id/etPassword"
+        app:layout_constraintTop_toTopOf="@+id/etPassword" />
 
     <Button
         android:id="@+id/btnLogin"

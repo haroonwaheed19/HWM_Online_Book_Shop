@@ -2,6 +2,7 @@ package com.hwm.hwmonlinebookshop
 
 
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -10,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class ForgotPasswordActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -36,10 +39,13 @@ class ForgotPasswordActivity : AppCompatActivity() {
 
             if (email.isEmpty()) {
                 Toast.makeText(this, "Please enter your email", Toast.LENGTH_SHORT).show()
+            } else if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Please enter a valid email address", Toast.LENGTH_SHORT).show()
             } else {
                 sendPasswordResetEmail(email)
             }
         }
+
     }
 
     private fun sendPasswordResetEmail(email: String) {
@@ -51,14 +57,16 @@ class ForgotPasswordActivity : AppCompatActivity() {
                         "Password reset email sent to $email",
                         Toast.LENGTH_LONG
                     ).show()
-                    finish() // Go back to the login screen
+                    finish()
                 } else {
-                    Toast.makeText(
-                        this,
-                        "Failed to send reset email: ${task.exception?.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    val errorMessage = when (task.exception) {
+                        is FirebaseAuthInvalidUserException -> "No user found with this email."
+                        is FirebaseAuthInvalidCredentialsException -> "Invalid email format."
+                        else -> "Failed to send reset email. Please try again."
+                    }
+                    Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
                 }
+
             }
     }
 }
