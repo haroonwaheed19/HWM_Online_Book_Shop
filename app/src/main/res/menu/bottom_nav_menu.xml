@@ -1,0 +1,27 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- Home item -->
+    <item
+        android:id="@+id/bottom_home"
+        android:icon="@drawable/ic_home"
+        android:title="Home" />
+
+    <!-- Cart item -->
+    <item
+        android:id="@+id/bottom_cart"
+        android:icon="@drawable/ic_cart"
+        android:title="Cart" />
+
+    <!-- Profile item -->
+    <item
+        android:id="@+id/bottom_profile"
+        android:icon="@drawable/ic_profile"
+        android:title="Profile" />
+
+    <!-- Search item -->
+    <item
+        android:id="@+id/bottom_search"
+        android:icon="@drawable/ic_search"
+        android:title="Search"
+        app:showAsAction="ifRoom" />
+</menu>

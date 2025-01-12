@@ -1,0 +1,5 @@
+<resources>
+    <declare-styleable name="Theme">
+        <attr name="bottomNavIconColor" format="reference" />
+    </declare-styleable>
+</resources>

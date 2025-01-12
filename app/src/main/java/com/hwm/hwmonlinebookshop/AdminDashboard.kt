@@ -22,11 +22,16 @@ class AdminDashboard : AppCompatActivity() {
 
         val auth = FirebaseAuth.getInstance()
         val logoutButton = findViewById<Button>(R.id.btnLogout)
+        val addBookButton = findViewById<Button>(R.id.btnAddBook)
 
         logoutButton.setOnClickListener {
             auth.signOut()
             startActivity(Intent(this, LoginScreen::class.java))
             finish()
         }
+        addBookButton.setOnClickListener {
+            startActivity(Intent(this, AddBooksData::class.java))
+        }
+
     }
 }

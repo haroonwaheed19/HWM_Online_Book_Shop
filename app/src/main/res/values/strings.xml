@@ -19,5 +19,10 @@
     <string name="update_book_data">Update Book Data</string>
     <string name="view_orders">View Orders</string>
     <string name="show_password">show password</string>
+    <string name="profile_avatar">profile avatar</string>
+    <string name="search">search</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="product_image">product image</string>
     <!--    <string name="default_web_client_id">496469332936-piok4gg8e3lre49pf9qqgfoj79ro9b3i.apps.googleusercontent.com</string>-->
 </resources>

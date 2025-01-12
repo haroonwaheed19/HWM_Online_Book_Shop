@@ -1,7 +1,22 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
-<style name="RoundedImage" parent="">
-<item name="cornerFamily">rounded</item>
-<item name="cornerSize">110%</item> <!-- Adjust to your preference -->
-</style>
+    <!-- Base application theme -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryVariant">@color/colorPrimaryVariant</item>
+        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSurface">@color/black</item>
+    </style>
+
+    <!-- Define Bottom Navigation View Styles -->
+    <style name="BottomNavigationViewActive" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="BottomNavigationViewInactive" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorSecondary</item>
+    </style>
 </resources>

@@ -71,23 +71,38 @@ class CreateAccount : AppCompatActivity() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         val userId = auth.currentUser?.uid
+                        if (userId == null) {
+                            Toast.makeText(this, "User ID is null", Toast.LENGTH_SHORT).show()
+                            return@addOnCompleteListener
+                        }
+
                         val user = hashMapOf(
                             "name" to name,
                             "email" to email,
-                            "role" to "user" // Default role is "user"
+                            "role" to "user", // Default role is "user"
+                            "password" to password
                         )
 
+                        // Log user data before saving
+                        println("DEBUG: User data to save: $user")
+
                         // Save user data in Firestore
-                        firestore.collection("users").document(userId!!).set(user)
+                        firestore.collection("users").document(userId).set(user)
                             .addOnSuccessListener {
+                                // Log success
+                                println("DEBUG: User data successfully saved.")
                                 Toast.makeText(this, "Account Created Successfully!", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this, LoginScreen::class.java))
                                 finish()
                             }
-                            .addOnFailureListener {
-                                Toast.makeText(this, "Failed to save user data: ${it.message}", Toast.LENGTH_SHORT).show()
+                            .addOnFailureListener { e ->
+                                // Log failure
+                                println("DEBUG: Failed to save user data: ${e.message}")
+                                Toast.makeText(this, "Failed to save user data: ${e.message}", Toast.LENGTH_SHORT).show()
                             }
                     } else {
+                        // Log error for account creation
+                        println("DEBUG: Account creation failed: ${task.exception?.message}")
                         Toast.makeText(this, "Account Creation Failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
                     }
                 }
