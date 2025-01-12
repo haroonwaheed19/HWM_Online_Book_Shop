@@ -31,34 +31,39 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Book Name"
+            android:textSize="20sp"
             android:textStyle="bold"
-            android:paddingTop="8dp" />
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/bookAuthor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Author"
-            android:paddingTop="4dp" />
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/bookDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Description"
-            android:paddingTop="4dp" />
+            android:padding="8dp" />
 
         <TextView
             android:id="@+id/bookPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:text="Price"
-            android:paddingTop="4dp" />
+            android:padding="8dp" />
 
         <Button
             android:id="@+id/confirmPurchaseButton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
             android:text="Confirm Purchase"
             android:backgroundTint="#1D9D74"
             android:paddingTop="16dp" />

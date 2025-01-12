@@ -11,6 +11,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.fragment.app.Fragment
 import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.navigation.NavigationView
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,7 +41,7 @@ class UserDashboard : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         // Enable the drawer to open/close via toolbar icon
-        toolbar.setNavigationIcon(R.drawable.ic_menu) // Ensure this icon is in your drawable folder
+        toolbar.setNavigationIcon(R.drawable.ic_menu)
         toolbar.setNavigationOnClickListener {
             drawerLayout.open()
         }
@@ -50,31 +51,19 @@ class UserDashboard : AppCompatActivity() {
         bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.bottom_home -> {
-                    // Show Home Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, HomeFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(HomeFragment())
                     true
                 }
                 R.id.bottom_cart -> {
-                    // Show Cart Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, CartFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(CartFragment())
                     true
                 }
                 R.id.bottom_profile -> {
-                    // Show Profile Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, ProfileFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(ProfileFragment())
                     true
                 }
                 R.id.bottom_search -> {
-                    // Show Search Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, SearchFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(SearchFragment())
                     true
                 }
                 else -> false
@@ -85,31 +74,19 @@ class UserDashboard : AppCompatActivity() {
         navigationView.setNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.nav_home -> {
-                    // Show Home Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, HomeFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(HomeFragment())
                     true
                 }
                 R.id.nav_profile -> {
-                    // Show Profile Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, ProfileFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(ProfileFragment())
                     true
                 }
                 R.id.nav_cart -> {
-                    // Show Cart Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, CartFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(CartFragment())
                     true
                 }
                 R.id.nav_settings -> {
-                    // Show Settings Fragment
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragmentContainer, SettingsFragment())
-                        .commitAllowingStateLoss()
+                    loadFragment(SettingsFragment())
                     true
                 }
                 R.id.nav_logout -> {
@@ -173,5 +150,16 @@ class UserDashboard : AppCompatActivity() {
                 return false
             }
         })
+
+        // Load the HomeFragment by default if no fragment is loaded
+        if (savedInstanceState == null) {
+            loadFragment(HomeFragment())
+        }
+    }
+
+    private fun loadFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragmentContainer, fragment)
+            .commitAllowingStateLoss()
     }
 }

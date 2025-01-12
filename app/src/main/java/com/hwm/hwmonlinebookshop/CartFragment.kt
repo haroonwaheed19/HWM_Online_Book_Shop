@@ -1,24 +1,23 @@
 package com.hwm.hwmonlinebookshop
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 
 class CartFragment : Fragment() {
 
     private lateinit var firestore: FirebaseFirestore
+    private lateinit var auth: FirebaseAuth
     private lateinit var cartRecyclerView: RecyclerView
     private lateinit var cartAdapter: CartAdapter
-    private lateinit var cartEmptyTextView: TextView
-    private lateinit var checkoutButton: Button
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,28 +26,40 @@ class CartFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_cart, container, false)
 
         firestore = FirebaseFirestore.getInstance()
+        auth = FirebaseAuth.getInstance()
         cartRecyclerView = view.findViewById(R.id.cartRecyclerView)
-        cartEmptyTextView = view.findViewById(R.id.cartEmptyTextView)
-        checkoutButton = view.findViewById(R.id.checkoutButton)
-
         cartRecyclerView.layoutManager = LinearLayoutManager(context)
 
-        cartAdapter = CartAdapter(emptyList())
+        cartAdapter = CartAdapter(listOf())
         cartRecyclerView.adapter = cartAdapter
 
-        // Fetch cart items from Firestore
-        firestore.collection("cart")
-            .get()
-            .addOnSuccessListener { result ->
-                val items = result.mapNotNull { it.toObject<CartItem>() }
-                cartAdapter.updateCart(items)
-                cartEmptyTextView.visibility = if (items.isEmpty()) View.VISIBLE else View.GONE
-                checkoutButton.visibility = if (items.isEmpty()) View.GONE else View.VISIBLE
-            }
-            .addOnFailureListener { exception ->
-                // Handle the error
-            }
+        fetchCartItems()
 
         return view
+    }
+
+    private fun fetchCartItems() {
+        val currentUser = auth.currentUser
+        currentUser?.let { user ->
+            firestore.collection("carts").document(user.uid)
+                .collection("items")
+                .get()
+                .addOnSuccessListener { result ->
+                    val cartItems = result.documents.mapNotNull { it.toObject(CartItem::class.java) }
+                    Log.d("CartFragment", "Cart items fetched: $cartItems") // Added log for fetched items
+                    if (cartItems.isNotEmpty()) {
+                        cartAdapter.updateCartItems(cartItems)
+                        cartAdapter.notifyDataSetChanged()
+                    } else {
+                        Toast.makeText(context, "No items in cart", Toast.LENGTH_SHORT).show()
+                    }
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(context, "Failed to fetch cart items: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("CartFragment", "Error fetching cart items", exception)
+                }
+        } ?: run {
+            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+        }
     }
 }

@@ -1,5 +1,6 @@
 package com.hwm.hwmonlinebookshop
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.toObject
 
 class HomeFragment : Fragment() {
 
@@ -22,7 +22,6 @@ class HomeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("HomeFragment", "onCreateView called")
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         firestore = FirebaseFirestore.getInstance()
@@ -30,8 +29,10 @@ class HomeFragment : Fragment() {
         homeRecyclerView.layoutManager = LinearLayoutManager(context)
 
         bookAdapter = BookAdapter(listOf()) { book ->
-            // Handle book click if needed
-            Log.d("HomeFragment", "Book clicked: ${book.name}")
+            val intent = Intent(activity, BookDetailsActivity::class.java).apply {
+                putExtra("BOOK_ID", book.id)
+            }
+            startActivity(intent)
         }
         homeRecyclerView.adapter = bookAdapter
 
@@ -41,25 +42,25 @@ class HomeFragment : Fragment() {
     }
 
     private fun fetchBooks() {
-        Log.d("HomeFragment", "Fetching books from Firestore")
         firestore.collection("Books")
             .get()
             .addOnSuccessListener { result ->
-                Log.d("HomeFragment", "Fetch successful")
-                val books = result.mapNotNull {
-                    Log.d("HomeFragment", "Book data: ${it.data}")
-                    it.toObject<Book>()
+                val books = result.documents.mapNotNull { doc ->
+                    val book = doc.toObject(Book::class.java)?.apply {
+                        id = doc.id  // Assign Firestore document ID to the book object
+                    }
+                    Log.d("BookFetch", "Fetched image URL: ${book?.imageUrl}") // Log the image URL
+                    book
                 }
-                bookAdapter.updateBooks(books)
-                if (books.isEmpty()) {
-                    Log.d("HomeFragment", "No books found")
+                if (books.isNotEmpty()) {
+                    bookAdapter.updateBooks(books)
+                } else {
                     Toast.makeText(context, "No books found", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { exception ->
-                // Handle the error
-                Log.e("HomeFragment", "Error fetching books", exception)
                 Toast.makeText(context, "Failed to fetch books: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Log.e("HomeFragment", "Error fetching books", exception)
             }
     }
 }

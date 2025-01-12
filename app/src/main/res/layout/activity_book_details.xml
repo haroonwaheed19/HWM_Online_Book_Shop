@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/main"
@@ -10,12 +11,16 @@
         android:id="@+id/bookImage"
         android:layout_width="match_parent"
         android:layout_height="200dp"
+        android:layout_marginBottom="30dp"
         android:scaleType="centerCrop" />
 
     <TextView
         android:id="@+id/bookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:padding="8dp"
+        android:textSize="22sp"
         android:text="Book Name"
         android:textStyle="bold" />
 
@@ -23,18 +28,27 @@
         android:id="@+id/bookAuthor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:padding="8dp"
+        android:layout_marginBottom="10dp"
         android:text="Author" />
 
     <TextView
         android:id="@+id/bookDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:padding="8dp"
+        android:layout_marginBottom="10dp"
         android:text="Description" />
 
     <TextView
         android:id="@+id/bookPrice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:textSize="22sp"
+        android:layout_marginBottom="10dp"
         android:text="Price" />
 
     <Button
@@ -42,6 +56,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#1D9D74"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:text="Add to Cart" />
 
     <Button

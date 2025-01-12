@@ -9,8 +9,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,11 +30,6 @@ class BookDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_book_details)
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         firestore = FirebaseFirestore.getInstance()
         auth = FirebaseAuth.getInstance()
@@ -50,23 +43,7 @@ class BookDetailsActivity : AppCompatActivity() {
 
         val bookId = intent.getStringExtra("BOOK_ID")
         if (bookId != null) {
-            firestore.collection("books").document(bookId).get()
-                .addOnSuccessListener { document ->
-                    book = document.toObject(Book::class.java)
-                    book?.let {
-                        bookNameTextView.text = it.name
-                        bookAuthorTextView.text = it.author
-                        bookDescriptionTextView.text = it.description
-                        bookPriceTextView.text = it.price.toString()
-                        Glide.with(this).load(it.imageUrl).into(bookImageView)
-                    } ?: run {
-                        Toast.makeText(this, "Book not found", Toast.LENGTH_SHORT).show()
-                    }
-                }
-                .addOnFailureListener { exception ->
-                    Toast.makeText(this, "Error fetching book details: ${exception.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("BookDetailsActivity", "Error fetching book details", exception)
-                }
+            fetchBookDetails(bookId)
         } else {
             Toast.makeText(this, "Book ID is null", Toast.LENGTH_SHORT).show()
         }
@@ -90,9 +67,41 @@ class BookDetailsActivity : AppCompatActivity() {
         }
     }
 
+    private fun fetchBookDetails(bookId: String) {
+        firestore.collection("Books").document(bookId).get()
+            .addOnSuccessListener { document ->
+                book = document.toObject(Book::class.java)
+                if (book != null) {
+                    bookNameTextView.text = book?.name
+                    bookAuthorTextView.text = book?.author
+                    bookDescriptionTextView.text = book?.description
+                    bookPriceTextView.text = book?.price.toString()
+                    Glide.with(this).load(book?.imageUrl).into(bookImageView)
+                    Log.d("BookDetailsActivity", "Fetched book details: $book") // Log fetched book details
+                } else {
+                    Toast.makeText(this, "Book not found", Toast.LENGTH_SHORT).show()
+                    Log.e("BookDetailsActivity", "Book not found")
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(this, "Error fetching book details: ${exception.message}", Toast.LENGTH_SHORT).show()
+                Log.e("BookDetailsActivity", "Error fetching book details", exception)
+            }
+    }
+
     private fun addToCart() {
         val currentUser = auth.currentUser
+        if (currentUser == null) {
+            Toast.makeText(this, "Please log in to add items to your cart.", Toast.LENGTH_SHORT).show()
+            return
+        }
+
         book?.let {
+            if (it.id.isNullOrEmpty()) {
+                Toast.makeText(this, "Invalid book ID.", Toast.LENGTH_SHORT).show()
+                return
+            }
+
             val cartItem = hashMapOf(
                 "id" to it.id,
                 "name" to it.name,
@@ -102,23 +111,21 @@ class BookDetailsActivity : AppCompatActivity() {
                 "quantity" to 1,
                 "imageUrl" to it.imageUrl
             )
-            currentUser?.let { user ->
-                firestore.collection("carts").document(user.uid)
-                    .collection("items")
-                    .document(it.id)
-                    .set(cartItem)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener { exception ->
-                        Toast.makeText(this, "Error adding to cart: ${exception.message}", Toast.LENGTH_SHORT).show()
-                        Log.e("BookDetailsActivity", "Error adding to cart", exception)
-                    }
-            } ?: run {
-                Toast.makeText(this, "User not logged in", Toast.LENGTH_SHORT).show()
-            }
+
+            firestore.collection("carts").document(currentUser.uid)
+                .collection("items")
+                .document(it.id)
+                .set(cartItem)
+                .addOnSuccessListener {
+                    Toast.makeText(this, "Added to cart", Toast.LENGTH_SHORT).show()
+                    Log.d("BookDetailsActivity", "Cart item added: $cartItem") // Log cart item
+                }
+                .addOnFailureListener { exception ->
+                    Toast.makeText(this, "Error adding to cart: ${exception.message}", Toast.LENGTH_SHORT).show()
+                    Log.e("BookDetailsActivity", "Error adding to cart", exception)
+                }
         } ?: run {
-            Toast.makeText(this, "Book details are null", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Book details are null.", Toast.LENGTH_SHORT).show()
         }
     }
 }
