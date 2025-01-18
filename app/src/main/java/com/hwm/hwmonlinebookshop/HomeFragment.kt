@@ -29,6 +29,7 @@ class HomeFragment : Fragment() {
         homeRecyclerView.layoutManager = LinearLayoutManager(context)
 
         bookAdapter = BookAdapter(listOf()) { book ->
+            // Intent to open BookDetailsActivity
             val intent = Intent(activity, BookDetailsActivity::class.java).apply {
                 putExtra("BOOK_ID", book.id)
             }
@@ -49,7 +50,6 @@ class HomeFragment : Fragment() {
                     val book = doc.toObject(Book::class.java)?.apply {
                         id = doc.id  // Assign Firestore document ID to the book object
                     }
-                    Log.d("BookFetch", "Fetched image URL: ${book?.imageUrl}") // Log the image URL
                     book
                 }
                 if (books.isNotEmpty()) {
@@ -60,7 +60,6 @@ class HomeFragment : Fragment() {
             }
             .addOnFailureListener { exception ->
                 Toast.makeText(context, "Failed to fetch books: ${exception.message}", Toast.LENGTH_SHORT).show()
-                Log.e("HomeFragment", "Error fetching books", exception)
             }
     }
 }

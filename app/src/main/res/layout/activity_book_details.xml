@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/main"
+    android:id="@+id/main">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
 
     <ImageView
         android:id="@+id/bookImage"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="500dp"
         android:layout_marginBottom="30dp"
         android:scaleType="centerCrop" />
 
@@ -18,7 +21,7 @@
         android:id="@+id/bookName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:padding="8dp"
         android:textSize="22sp"
         android:text="Book Name"
@@ -30,7 +33,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:padding="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:text="Author" />
 
     <TextView
@@ -39,7 +42,7 @@
         android:layout_height="wrap_content"
         android:textSize="22sp"
         android:padding="8dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:text="Description" />
 
     <TextView
@@ -48,7 +51,7 @@
         android:layout_height="wrap_content"
         android:padding="8dp"
         android:textSize="22sp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="5dp"
         android:text="Price" />
 
     <Button
@@ -56,8 +59,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#1D9D74"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="6dp"
         android:text="Add to Cart" />
 
     <Button
@@ -67,3 +70,5 @@
         android:backgroundTint="#E91E63"
         android:text="Buy Now" />
 </LinearLayout>
+
+</ScrollView>

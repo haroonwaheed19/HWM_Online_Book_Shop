@@ -47,13 +47,13 @@ class CheckoutActivity : AppCompatActivity() {
         val bookName = intent.getStringExtra("BOOK_NAME")
         val bookAuthor = intent.getStringExtra("BOOK_AUTHOR")
         val bookDescription = intent.getStringExtra("BOOK_DESCRIPTION")
-        val bookPrice = intent.getDoubleExtra("BOOK_PRICE", 0.0)
+        val bookPrice = intent.getStringExtra("BOOK_PRICE")
         val bookImageUrl = intent.getStringExtra("BOOK_IMAGE_URL")
 
         bookNameTextView.text = bookName
         bookAuthorTextView.text = bookAuthor
         bookDescriptionTextView.text = bookDescription
-        bookPriceTextView.text = bookPrice.toString()
+        bookPriceTextView.text = bookPrice
         Glide.with(this).load(bookImageUrl).into(bookImageView)
 
         confirmPurchaseButton.setOnClickListener {

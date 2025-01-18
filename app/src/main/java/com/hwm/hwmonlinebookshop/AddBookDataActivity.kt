@@ -30,9 +30,9 @@ class AddBooksData : AppCompatActivity() {
             val name = bookName.text.toString()
             val description = bookDescription.text.toString()
             val author = bookAuthor.text.toString()
-            val price = bookPrice.text.toString().toDoubleOrNull()
+            val price = bookPrice.text.toString()
 
-            if (name.isNotEmpty() && description.isNotEmpty() && author.isNotEmpty() && price != null) {
+            if (name.isNotEmpty() && description.isNotEmpty() && author.isNotEmpty() && price.isNotEmpty()) {
                 val book = Book(UUID.randomUUID().toString(), name, description, author, price, "https://example.com/book.jpg")
 
                 firestore.collection("books").document(book.id).set(book)

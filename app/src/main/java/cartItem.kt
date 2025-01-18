@@ -4,7 +4,7 @@ data class CartItem(
     var name: String = "",
     var description: String = "",
     var author: String = "",
-    var price: Double = 0.0,
+    var price: String = "",
     var quantity: Int = 1,
     var imageUrl: String = ""
 )
