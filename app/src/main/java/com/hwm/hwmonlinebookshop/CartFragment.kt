@@ -1,5 +1,6 @@
 package com.hwm.hwmonlinebookshop
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -35,7 +36,7 @@ class CartFragment : Fragment() {
 
         // Set RecyclerView layout and adapter
         cartRecyclerView.layoutManager = LinearLayoutManager(context)
-        cartAdapter = CartAdapter(listOf(), ::removeFromCart)
+        cartAdapter = CartAdapter(listOf(), ::removeFromCart, ::onCartItemClick)
         cartRecyclerView.adapter = cartAdapter
 
         // Fetch cart items
@@ -52,7 +53,6 @@ class CartFragment : Fragment() {
                 .get()
                 .addOnSuccessListener { result ->
                     val cartItems = result.documents.mapNotNull { it.toObject(CartItem::class.java) }
-                    Log.d("CartFragment", "Cart items fetched: $cartItems")
                     if (cartItems.isNotEmpty()) {
                         cartAdapter.updateCartItems(cartItems)
                         cartRecyclerView.visibility = View.VISIBLE
@@ -64,7 +64,6 @@ class CartFragment : Fragment() {
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(context, "Failed to fetch cart items: ${exception.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("CartFragment", "Error fetching cart items", exception)
                     cartRecyclerView.visibility = View.GONE
                     cartEmptyTextView.visibility = View.VISIBLE
                 }
@@ -72,44 +71,6 @@ class CartFragment : Fragment() {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
             cartRecyclerView.visibility = View.GONE
             cartEmptyTextView.visibility = View.VISIBLE
-        }
-    }
-
-    fun addToCart(book: Book) {
-        val currentUser = auth.currentUser
-        currentUser?.let { user ->
-            val cartRef = firestore.collection("carts").document(user.uid)
-                .collection("items").document(book.id)
-
-            cartRef.get().addOnSuccessListener { document ->
-                if (document.exists()) {
-                    // Update existing cart item
-                    val cartItem = document.toObject(CartItem::class.java)
-                    cartItem?.let {
-                        it.quantity += 1
-                        val originalPrice = book.price.toDouble()
-                        it.price = (originalPrice * it.quantity).toString()
-                        cartRef.set(it)
-                    }
-                } else {
-                    // Add new cart item
-                    val newCartItem = CartItem(
-                        id = book.id,
-                        name = book.name,
-                        description = book.description,
-                        author = book.author,
-                        price = book.price,
-                        quantity = 1,
-                        imageUrl = book.imageUrl
-                    )
-                    cartRef.set(newCartItem)
-                }
-            }.addOnFailureListener { exception ->
-                Toast.makeText(context, "Failed to add to cart: ${exception.message}", Toast.LENGTH_SHORT).show()
-                Log.e("CartFragment", "Error adding to cart", exception)
-            }
-        } ?: run {
-            Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -126,10 +87,23 @@ class CartFragment : Fragment() {
                 }
                 .addOnFailureListener { exception ->
                     Toast.makeText(context, "Failed to remove from cart: ${exception.message}", Toast.LENGTH_SHORT).show()
-                    Log.e("CartFragment", "Error removing from cart", exception)
                 }
         } ?: run {
             Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
         }
     }
+
+    private fun onCartItemClick(it: CartItem) {
+        // Navigate to CheckoutActivity and pass the selected cart item details
+        val intent = Intent(context, CheckoutActivity::class.java).apply {
+            putExtra("BOOK_ID", it.id)
+            putExtra("BOOK_NAME", it.name)
+            putExtra("BOOK_AUTHOR", it.author)
+            putExtra("BOOK_DESCRIPTION", it.description)
+            putExtra("BOOK_PRICE", it.price)
+            putExtra("BOOK_IMAGE_URL", it.imageUrl)
+        }
+        startActivity(intent)
+    }
+
 }

@@ -11,7 +11,8 @@ import com.bumptech.glide.Glide
 
 class CartAdapter(
     private var cartItems: List<CartItem>,
-    private val onRemoveClickListener: (CartItem) -> Unit
+    private val onRemoveClickListener: (CartItem) -> Unit,
+    private val onItemClickListener: (CartItem) -> Unit
 ) : RecyclerView.Adapter<CartAdapter.CartViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
@@ -44,6 +45,12 @@ class CartAdapter(
             itemPrice.text = "Price: ${cartItem.price}"
             Glide.with(itemView).load(cartItem.imageUrl).into(itemImage)
 
+            // Handle item click
+            itemView.setOnClickListener {
+                onItemClickListener(cartItem)
+            }
+
+            // Handle remove button click
             removeButton.setOnClickListener {
                 onRemoveClickListener(cartItem)
             }

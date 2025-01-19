@@ -34,6 +34,7 @@ class UserDashboard : AppCompatActivity() {
 
         auth = FirebaseAuth.getInstance()
         firestore = FirebaseFirestore.getInstance()
+        refreshDrawerHeader()
 
         drawerLayout = findViewById(R.id.drawerLayout)
         val navigationView: NavigationView = findViewById(R.id.navigationView)
@@ -194,5 +195,17 @@ class UserDashboard : AppCompatActivity() {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragmentContainer, fragment)
             .commit()
+    }
+
+    fun refreshDrawerHeader() {
+        val navView: NavigationView = findViewById(R.id.navigationView)
+        val headerView = navView.getHeaderView(0)
+        val nameTextView = headerView.findViewById<TextView>(R.id.nav_header_name)
+        val emailTextView = headerView.findViewById<TextView>(R.id.nav_header_email)
+        val currentUser = auth.currentUser
+        if (currentUser != null) {
+            nameTextView.text = currentUser.displayName
+            emailTextView.text = currentUser.email
+        }
     }
 }
