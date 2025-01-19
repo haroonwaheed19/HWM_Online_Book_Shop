@@ -5,10 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddBooksData">
-
-    <!-- App Logo -->
-
+    tools:context=".UpdateBookDataActivity">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imageView"
@@ -28,7 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:padding="4dp"
-        android:text="Add Book Details"
+        android:text="Update Book Details"
         android:textAlignment="center"
         android:textColor="@color/colorSecondary"
         android:textSize="24sp"
@@ -101,12 +98,12 @@
         app:layout_constraintTop_toBottomOf="@+id/editTextBookPrice" />
 
     <Button
-        android:id="@+id/btnAddBook"
+        android:id="@+id/btnUpdateBook"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:backgroundTint="#1D9D74"
-        android:text="Add Book"
+        android:text="Update Book"
         android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"

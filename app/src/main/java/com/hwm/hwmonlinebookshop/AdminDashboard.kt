@@ -10,7 +10,7 @@ import androidx.core.view.WindowInsetsCompat
 import com.google.firebase.auth.FirebaseAuth
 
 class AdminDashboard : AppCompatActivity() {
-    override fun onCreate(savedInstanceState : Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_admin_dashboard)
@@ -23,15 +23,27 @@ class AdminDashboard : AppCompatActivity() {
         val auth = FirebaseAuth.getInstance()
         val logoutButton = findViewById<Button>(R.id.btnLogout)
         val addBookButton = findViewById<Button>(R.id.btnAddBook)
+        val manageBooksButton = findViewById<Button>(R.id.btnManageBooks)
+        val profileButton = findViewById<Button>(R.id.btnProfile)
+
+        profileButton.setOnClickListener {
+            val intent = Intent(this, AdminProfileActivity::class.java)
+            startActivity(intent)
+        }
+
+        manageBooksButton.setOnClickListener {
+            val intent = Intent(this, BookListActivity::class.java)
+            startActivity(intent)
+        }
 
         logoutButton.setOnClickListener {
             auth.signOut()
             startActivity(Intent(this, LoginScreen::class.java))
             finish()
         }
+
         addBookButton.setOnClickListener {
             startActivity(Intent(this, AddBooksData::class.java))
         }
-
     }
 }
