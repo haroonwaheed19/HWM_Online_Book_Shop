@@ -105,9 +105,6 @@ class CheckoutActivity : AppCompatActivity() {
             .collection("items").document(bookId)
 
         cartRef.delete()
-            .addOnSuccessListener {
-                Toast.makeText(this, "The purchased item has been removed from the cart.", Toast.LENGTH_SHORT).show()
-            }
             .addOnFailureListener { exception ->
                 Toast.makeText(this, "Failed to remove the item from the cart: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
