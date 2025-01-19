@@ -15,7 +15,7 @@
         android:id="@+id/action_notifications"
         android:icon="@drawable/ic_notification"
         android:title="Notifications"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="never" />
 
     <!-- Settings Item -->
     <item

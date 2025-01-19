@@ -43,9 +43,6 @@ class UserDashboard : AppCompatActivity() {
         setSupportActionBar(toolbar)
 
         toolbar.setNavigationIcon(R.drawable.ic_menu)
-        toolbar.setNavigationOnClickListener {
-            drawerLayout.open()
-        }
 
         val bottomNav: BottomNavigationView = findViewById(R.id.bottomNavigationView)
         bottomNav.setOnItemSelectedListener { item ->
@@ -136,22 +133,22 @@ class UserDashboard : AppCompatActivity() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        menuInflater.inflate(R.menu.top_app_bar_menu, menu)
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem.actionView as SearchView
-        searchView.queryHint = "Search Books..."
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return false
-            }
-        })
-        return true
-    }
+//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+//        menuInflater.inflate(R.menu.top_app_bar_menu, menu)
+//        val searchItem = menu.findItem(R.id.action_search)
+//        val searchView = searchItem.actionView as SearchView
+//        searchView.queryHint = "Search Books..."
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                return false
+//            }
+//        })
+//        return true
+//    }
 
     fun addToCart(book: Book) {
         val currentUser = auth.currentUser
